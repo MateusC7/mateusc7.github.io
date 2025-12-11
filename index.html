@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Odoo Direct Print - One-time payment, no subscriptions. Print any Odoo document directly to your printer without IoT Box.">
+    <title>Odoo Direct Print - No Subscription, No IoT Box</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1E40AF;
+            --light-blue: #3B82F6;
+            --dark-blue: #1E3A8A;
+            --accent-green: #10B981;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-600: #4B5563;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-900);
+            background: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            top: -50%;
+            left: -50%;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        /* Pricing Badge */
+        .pricing-highlight {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 25px 35px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            display: block;
+            text-align: center;
+            max-width: 100%;
+        }
+
+        .pricing-highlight .main-text {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .pricing-highlight .sub-text {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .pricing-highlight .checkmark {
+            color: var(--accent-green);
+            font-size: 1.3em;
+            margin-right: 8px;
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-visual img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Download Buttons */
+        .download-section {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .download-btn {
+            background: white;
+            color: var(--primary-blue);
+            padding: 18px 35px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .download-btn svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* Formats Supported */
+        .formats {
+            background: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .formats h3 {
+            font-size: 1.8em;
+            color: var(--primary-blue);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .format-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .format-badge {
+            background: var(--gray-50);
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .format-badge::before {
+            content: '📄';
+            font-size: 1.3em;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 20px;
+            background: var(--gray-50);
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 60px;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            border: 2px solid var(--primary-blue);
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 64, 175, 0.2);
+            border-color: white;
+            background: var(--primary-blue);
+        }
+
+        .feature-card:hover .feature-content h3,
+        .feature-card:hover .feature-content p {
+            color: white;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-icon-wrapper {
+            flex-shrink: 0;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: var(--primary-blue);
+            background: rgba(30, 64, 175, 0.1);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            color: white;
+        }
+
+        .feature-content h3 {
+            color: var(--gray-900);
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .feature-content p {
+            color: var(--gray-600);
+            line-height: 1.7;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        /* Installation Guide */
+        .installation-guide {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .installation-guide h2 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 60px;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .guide-carousel {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .guide-slide {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .guide-slide.active {
+            display: grid;
+        }
+
+        .guide-image-container {
+            background: var(--gray-100);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(30, 64, 175, 0.12);
+            border: 2px solid var(--gray-100);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .guide-image-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 50px rgba(30, 64, 175, 0.18);
+        }
+
+        .guide-image-container::after {
+            content: '🔍 Click to enlarge';
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(30, 64, 175, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .guide-image-container:hover::after {
+            opacity: 1;
+        }
+
+        .guide-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .guide-content {
+            padding: 20px;
+        }
+
+        .guide-content .step-badge {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .guide-content h3 {
+            font-size: 2em;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .guide-content p {
+            font-size: 1.15em;
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+
+        .guide-content code {
+            background: var(--gray-100);
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: var(--primary-blue);
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .lightbox-content img {
+            width: 100%;
+            height: auto;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2.5em;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); }
+            to { transform: scale(1); }
+        }
+
+        /* Carousel Navigation */
+        .carousel-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .carousel-btn {
+            background: white;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .carousel-btn:disabled:hover {
+            background: white;
+            color: var(--primary-blue);
+            transform: scale(1);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 12px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: var(--primary-blue);
+            width: 40px;
+            border-radius: 10px;
+        }
+
+        .carousel-counter {
+            font-size: 1.1em;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        /* Video Section */
+        .video-section {
+            padding: 80px 20px;
+            background: var(--gray-50);
+        }
+
+        .video-section h2 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(30, 64, 175, 0.15);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+
+        /* Video Language Selector */
+        .video-language-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .video-lang-btn {
+            background: white;
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            padding: 15px 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-lang-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+        }
+
+        .video-lang-btn .flag {
+            font-size: 1.8em;
+        }
+
+        /* Get Module Button */
+        .get-module-section {
+            padding: 80px 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .get-module-section h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .get-module-section p {
+            font-size: 1.2em;
+            color: var(--gray-600);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .get-module-btn {
+            background: var(--primary-blue);
+            color: white;
+            padding: 20px 50px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+        }
+
+        .get-module-btn:hover {
+            background: var(--light-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+        }
+
+        .get-module-btn::before {
+            content: '🛒';
+            font-size: 1.3em;
+        }
+
+        /* Compatibility */
+        .compatibility {
+            padding: 80px 20px;
+            background: var(--gray-50);
+            text-align: center;
+        }
+
+        .compatibility h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: var(--primary-blue);
+            font-weight: 800;
+        }
+
+        .compatibility p {
+            font-size: 1.2em;
+            color: var(--gray-600);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+
+        .compatibility-icons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .compat-item {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .compat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(30, 64, 175, 0.1);
+        }
+
+        .compat-icon {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+        }
+
+        .compat-item p {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .cta p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: white;
+            color: var(--primary-blue);
+            padding: 20px 50px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.3em;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        footer a {
+            color: var(--light-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text {
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5em;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-slide {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .guide-slide.active {
+                display: block;
+            }
+
+            .features h2, .installation-guide h2, .video-section h2, .compatibility h2, .get-module-section h2 {
+                font-size: 2.2em;
+            }
+
+            .video-container iframe {
+                height: 300px;
+            }
+
+            .carousel-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>ODOO DIRECT PRINT</h1>
+                <p class="subtitle">Print any Odoo document directly to your printer. No IoT Box. No subscriptions. No hassle.</p>
+                
+                <div class="pricing-highlight">
+                    <span class="main-text"><span class="checkmark">✓</span>One-Time Payment</span>
+                    <span class="sub-text">No monthly fees. Own it forever.</span>
+                </div>
+
+                <div class="download-section">
+                    <a href="https://github.com/MateusC7/Odoo-Direct-Print/releases/download/v1.0/Installer_DirectPrint.exe" class="download-btn" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+                        </svg>
+                        Windows
+                    </a>
+                    <a href="https://github.com/MateusC7/Odoo-Direct-Print/releases/download/v1.0/OdooDirectPrint" class="download-btn" target="_blank">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.84-.41 1.719-.127 2.703.283.984 1.216 1.948 1.216 1.948.301.426.61.853.929 1.275.318.422.644.839.976 1.25.664.82 1.357 1.616 2.113 2.346.755.729 1.575 1.393 2.467 1.97.892.577 1.857 1.065 2.877 1.446 1.02.381 2.096.654 3.215.799 2.238.29 4.592-.12 6.375-1.548 1.783-1.428 2.858-3.713 2.858-3.713.486-.97.729-2.043.729-3.207 0-1.164-.243-2.237-.729-3.207 0 0-1.075-2.285-2.858-3.713-1.783-1.428-4.137-1.838-6.375-1.548-1.119.145-2.195.418-3.215.799-1.02.381-1.985.869-2.877 1.446-.892.577-1.712 1.241-2.467 1.97-.756.73-1.449 1.526-2.113 2.346-.332.411-.658.828-.976 1.25-.319.422-.628.849-.929 1.275 0 0-.933-.964-1.216-1.948-.283-.984-.151-1.863.127-2.703.589-1.771 1.831-3.47 2.716-4.521.75-1.067.974-1.928 1.05-3.02.065-1.491-1.056-5.965 3.17-6.298.165-.013.325-.021.48-.021z"/>
+                        </svg>
+                        Linux
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <img src="printlogo.gif" alt="Odoo Direct Print Demo">
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Formats -->
+    <section class="formats">
+        <div class="container">
+            <h3>Supported Print Formats</h3>
+            <div class="format-badges">
+                <div class="format-badge">PDF Documents</div>
+                <div class="format-badge">ZPL Labels</div>
+                <div class="format-badge">Thermal Tickets</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose Direct Print?</h2>
+            <div class="features-grid">
+                
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">💰</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>One-Time Payment</h3>
+                        <p>No monthly subscriptions. Includes the print agent and Odoo module for v18-19, Community & Enterprise.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">🖨️</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Universal Compatibility</h3>
+                        <p>Works with any printer - USB, Wi-Fi, Bluetooth, or Ethernet. If it prints manually, it works with Direct Print.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">📱</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Mobile & Tablet Ready</h3>
+                        <p>Print from your mobile or tablet as long as the agent runs on your main PC where printers are connected.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">⚡</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Zero Setup Hassle</h3>
+                        <p>No IoT Box required. Simple configuration. Start printing in minutes - no clicks, no popups, just results.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">🏪</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Perfect for POS</h3>
+                        <p>Ideal for restaurants and retail. Multiple kitchen printers by category for receipts, invoices, and orders.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <div class="feature-icon">🔧</div>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Multi-Printer Support</h3>
+                        <p>Assign specific printers to reports, modules, and categories. Total control over your printing workflow.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Get Module Section -->
+    <section class="get-module-section">
+        <div class="container">
+            <h2>Get the Module</h2>
+            <p>Purchase the Odoo Direct Print module from the official Odoo Apps Store. Available for Odoo 18 and 19, both Community and Enterprise editions.</p>
+            <a href="https://apps.odoo.com/apps/modules/19.0/print_direct_odoo" class="get-module-btn" target="_blank">
+                Buy on Odoo Apps Store
+            </a>
+        </div>
+    </section>
+
+    <!-- Installation Guide with Carousel -->
+    <section class="installation-guide">
+        <div class="container">
+            <h2>Installation Guide</h2>
+
+            <div class="guide-carousel">
+                
+                <!-- Slide 1 -->
+                <div class="guide-slide active">
+                    <div class="guide-image-container" onclick="openLightbox('step1.png')">
+                        <img src="step1.gif" alt="Download & Install Agent">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 1</span>
+                        <h3>Download & Install</h3>
+                        <p>Download the Print Agent application for your operating system (Windows or Linux). Install and open the application. You'll see a clean interface ready for setup.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('step2.png')">
+                        <img src="step2.png" alt="Authorize PC">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 2</span>
+                        <h3>Authorize Your PC</h3>
+                        <p>Click <strong>"Step 1: Authorize PC"</strong>. Your browser will show a security warning about an insecure HTTP connection. This is normal - accept it to authorize communication between Odoo and the local print agent.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('Screenshot Service Active.png')">
+                        <img src="Screenshot Service Active.png" alt="Service Active">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 3</span>
+                        <h3>Confirm Activation</h3>
+                        <p>After authorization, you'll see: <strong>"Printing service is active and authorized"</strong>. The agent is now running and ready to receive print jobs from Odoo.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('step3.png')">
+                        <img src="step3.png" alt="Odoo Configuration">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 4</span>
+                        <h3>Configure in Odoo</h3>
+                        <p>In Odoo, go to <strong>Settings</strong> and find <strong>"Odoo Direct Print – MateusC7"</strong>. In <strong>Print Agent Configuration</strong>, copy the IP from the agent's <strong>"Step 2"</strong> button (e.g., de>http://192.168.1.10:5000</code>) and paste it here.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 5 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('step4.png')">
+                        <img src="step4.png" alt="Report Management">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 5</span>
+                        <h3>Assign Printers to Reports</h3>
+                        <p>Navigate to <strong>Report Management</strong>. Select any report (e.g., <strong>Invoice PDF</strong>) and enter the exact printer name in <strong>Agent Printer Name</strong>. Copy it from the agent's printer list for accuracy.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 6 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('step5.png')">
+                        <img src="step5.png" alt="POS Configuration">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 6</span>
+                        <h3>Configure POS (Optional)</h3>
+                        <p>For Point of Sale, open POS settings → <strong>Connected Devices</strong> → <strong>Local Printing (Agent)</strong>. Select your receipt printer. For kitchen printers, go to <strong>Preparation → Manage Printers</strong> and assign printers by category.</p>
+                    </div>
+                </div>
+
+                <!-- Slide 7 -->
+                <div class="guide-slide">
+                    <div class="guide-image-container" onclick="openLightbox('step6.png')">
+                        <img src="step6.png" alt="Kitchen Printers">
+                    </div>
+                    <div class="guide-content">
+                        <span class="step-badge">STEP 7</span>
+                        <h3>Kitchen Printers Setup</h3>
+                        <p>In the <strong>Agent Printer Name</strong> field, type the exact name of the kitchen printer you want to use. This allows you to print different orders by category - ideal for restaurants, bars, or businesses with multiple stations.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Carousel Navigation -->
+            <div class="carousel-navigation">
+                <button class="carousel-btn" id="prevBtn" onclick="changeSlide(-1)">‹</button>
+                
+                <div class="carousel-dots" id="dotsContainer"></div>
+                
+                <span class="carousel-counter">
+                    <span id="currentSlide">1</span> / <span id="totalSlides">7</span>
+                </span>
+                
+                <button class="carousel-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">×</button>
+            <img id="lightbox-img" src="" alt="Full size image">
+        </div>
+    </div>
+
+    <!-- Video Tutorial -->
+    <section class="video-section">
+        <div class="container">
+            <h2>Video Tutorial</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/ly06MYjg8Ow" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            </div>
+            
+            <div class="video-language-selector">
+                <a href="https://www.youtube.com/watch?v=ly06MYjg8Ow" class="video-lang-btn" target="_blank">
+                    <span class="flag">🇺🇸</span>
+                    <span>Watch in English</span>
+                </a>
+                <a href="https://www.youtube.com/watch?v=z1x-chsUZCw" class="video-lang-btn" target="_blank">
+                    <span class="flag">🇪🇸</span>
+                    <span>Ver en Español</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compatibility -->
+    <section class="compatibility">
+        <div class="container">
+            <h2>Full Compatibility</h2>
+            <p>Works with <strong>Odoo Community and Enterprise</strong> (v18-19). Compatible with Windows and Linux. Print from desktop, mobile, or tablet - as long as your print agent is running on the PC connected to your printers.</p>
+            
+            <div class="compatibility-icons">
+                <div class="compat-item">
+                    <div class="compat-icon">💻</div>
+                    <p>Windows & Linux</p>
+                </div>
+                <div class="compat-item">
+                    <div class="compat-icon">📱</div>
+                    <p>Mobile & Tablet</p>
+                </div>
+                <div class="compat-item">
+                    <div class="compat-icon">🖨️</div>
+                    <p>Any Printer</p>
+                </div>
+                <div class="compat-item">
+                    <div class="compat-icon">🏢</div>
+                    <p>Odoo 18-19</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Print Smarter?</h2>
+            <p>One-time payment. No subscriptions. No IoT Box. No limits.</p>
+            <a href="https://apps.odoo.com/apps/modules/19.0/print_direct_odoo" class="cta-button" target="_blank">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Odoo Direct Print - MateusC7</p>
+            <p>Need support? Contact: <a href="mailto:mateocrespo38@gmail.com">mateocrespo38@gmail.com</a></p>
+            <p><a href="https://github.com/MateusC7/Odoo-Direct-Print" target="_blank">GitHub</a> | <a href="https://apps.odoo.com/apps/modules/browse?author=MateusC7" target="_blank">Odoo Apps</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Carousel functionality
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.guide-slide');
+        const totalSlides = slides.length;
+        const dotsContainer = document.getElementById('dotsContainer');
+        const currentSlideSpan = document.getElementById('currentSlide');
+        const totalSlidesSpan = document.getElementById('totalSlides');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Initialize
+        totalSlidesSpan.textContent = totalSlides;
+
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot';
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+            
+            currentSlideSpan.textContent = n + 1;
+
+            prevBtn.disabled = (n === 0);
+            nextBtn.disabled = (n === totalSlides - 1);
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex < 0) currentSlideIndex = 0;
+            if (currentSlideIndex >= totalSlides) currentSlideIndex = totalSlides - 1;
+            showSlide(currentSlideIndex);
+        }
+
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            showSlide(currentSlideIndex);
+        }
+
+        // Lightbox functionality
+        function openLightbox(imageSrc) {
+            event.stopPropagation();
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imageSrc;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with ESC key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Initialize first slide
+        showSlide(0);
+    </script>
+
+</body>
+</html>
